@@ -10,11 +10,11 @@ retorno = {
 def lambda_handler(event, context):
     method = event.get('httpMethod')
     cpf = event.get('cpf')
-    name = event.get('nome')
+    nome = event.get('nome')
     email = event.get('email')
 
     if method == 'POST':
-        return handle_post(cpf, name, email)
+        return handle_post(cpf, nome, email)
     elif method == 'GET':
         return handle_get(cpf)
     elif method == 'DELETE':
@@ -23,25 +23,37 @@ def lambda_handler(event, context):
         retorno['statusCode'] = 405
         retorno['body'] = json.dumps('Method Not Allowed')
 
-def handle_post(cpf, name, email):
+def handle_post(cpf, nome, email):
     
     if cpf.strip():
         if is_valid_cpf(cpf):
             retorno['statusCode'] = 201
-            retorno['body'] = json.dumps(f'CPF added {cpf}')
+            retorno['body'] = json.dumps(f'CPF {cpf}')
         else:
              retorno['body'] = json.dumps('CPF invalid')
              return retorno
+    else:
+        retorno['body'] = json.dumps('CPF invalid')
+        return retorno
          
     if email.strip():
         if is_valid_email(email):
-            retorno['statusCode'] = 201
-            retorno['body'] += json.dumps(f' e-mail {email} and {name} added')
+            retorno['body'] += json.dumps(f' e-mail {email} and {nome} added')
         else:
-            retorno['body'] = json.dumps(f'e-mail {email} and {name} are invalid')
+            retorno['body'] = json.dumps(f'The e-mail {email} is invalid')
             return retorno
+    else:
+        retorno['body'] = json.dumps(f'The e-mail {email} is invalid')
+        return retorno
+        
+    if nome.strip():
+        retorno['body'] += json.dumps(f' and {nome} added')
+    else:
+        retorno['body'] = json.dumps(f'The name {nome} is invalid')
+        return retorno
     
-    storage[(cpf, name, email)] = True
+    
+    storage[cpf] = {'CPF': cpf, 'Nome': nome, 'Email': email}
         
     return retorno
                  
@@ -103,7 +115,7 @@ def is_valid_cpf(cpf: str) -> bool:
         digito1 = 11 - resto
       
     temp_cpf += str(digito1)
-    soma = sum(int(temp_cpf[i]) * multipicador2[i] for i in range(10))
+    soma = sum(int(temp_cpf[i]) * multiplicador2[i] for i in range(10))
     resto = soma % 11
     
     if(resto < 2):

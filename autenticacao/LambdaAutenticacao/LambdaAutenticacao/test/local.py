@@ -4,7 +4,9 @@ from LambdaAutenticacao import lambda_handler
 def test_post():
     event = {
         'httpMethod': 'POST',
-        'cpf': '12345678901'
+        'cpf': '766.909.060-00',
+        'email': 'teste@gmail.com',
+        'nome': 'Teste'
     }
     response = lambda_handler(event, None)
     print('POST Response:', response)
@@ -12,7 +14,7 @@ def test_post():
 def test_get():
     event = {
         'httpMethod': 'GET',
-        'cpf': '12345678901'
+        'cpf': '766.909.060-00'
     }
     response = lambda_handler(event, None)
     print('GET Response:', response)
@@ -20,7 +22,7 @@ def test_get():
 def test_delete():
     event = {
         'httpMethod': 'DELETE',
-        'cpf': '12345678901'
+        'cpf': '766.909.060-00'
     }
     response = lambda_handler(event, None)
     print('DELETE Response:', response)
