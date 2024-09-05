@@ -1,4 +1,5 @@
 import json
+from pymongo import MongoClient
 
 storage = {}
 
@@ -6,6 +7,11 @@ retorno = {
     'statusCode': 400,
     'body': json.dumps('Invalid data.')
 }
+
+# Conecte-se ao MongoDB Atlas
+client = MongoClient('mongodb+srv://fiap:fiap@techfiap.bznai.mongodb.net/')
+db = client['ControleDePedidos']
+collection = db['Cadastros']
 
 def lambda_handler(event, context):
     method = event.get('httpMethod')
