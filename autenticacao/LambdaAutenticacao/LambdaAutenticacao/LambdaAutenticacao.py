@@ -62,39 +62,31 @@ def handle_post(cpf, nome, email):
 def handle_get(cpf):
     if is_valid_cpf(cpf):
         if cpf in storage:
-            return {
-                'statusCode': 200,
-                'body': json.dumps(f'CPF found {cpf}')
-            }
+            retorno['statusCode'] = 200
+            retorno['body'] = json.dumps(f'CPF found {cpf}')
+            return retorno
         else:
-            return {
-                'statusCode': 404,
-                'body': json.dumps('CPF not found')
-            }
+            retorno['statusCode'] = 404
+            retorno['body'] = json.dumps(f'CPF not found')
+            return retorno
     else:
-        return {
-            'statusCode': 400,
-            'body': json.dumps('CPF invalid')
-        }
+        return retorno
+    
+
 
 def handle_delete(cpf):
     if is_valid_cpf(cpf):
         if cpf in storage:
             del storage[cpf]
-            return {
-                'statusCode': 200,
-                'body': json.dumps('CPF deleted')
-            }
+            retorno['statusCode'] = 200
+            retorno['body'] = json.dumps('CPF deleted')
+            return retorno
         else:
-            return {
-                'statusCode': 404,
-                'body': json.dumps('CPF not found')
-            }
+            retorno['statusCode'] = 404
+            retorno['body'] = json.dumps('CPF not found')
+            return retorno
     else:
-        return {
-            'statusCode': 400,
-            'body': json.dumps('CPF invalid')
-        }
+        return retorno
 
 def is_valid_cpf(cpf: str) -> bool:
     cpf = cpf.strip().replace(".", "").replace("-", "")
