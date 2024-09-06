@@ -1,4 +1,5 @@
 import json
+import os
 from pymongo import MongoClient
 
 storage = {}
@@ -9,9 +10,9 @@ retorno = {
 }
 
 # Conecte-se ao MongoDB Atlas
-client = MongoClient('mongodb+srv://fiap:fiap@techfiap.bznai.mongodb.net/')
-db = client['ControleDePedidos']
-collection = db['Cadastros']
+client = MongoClient(os.getenv('MONGODB_URI'))
+db = client[os.getenv('MONGODB_DB')]
+collection = db[os.getenv('MONGODB_COLLECTION')]
 
 def lambda_handler(event, context):
     method = event.get('httpMethod')
@@ -32,6 +33,13 @@ def lambda_handler(event, context):
 def handle_post(cpf, nome, email):
     
     if cpf.strip():
+        cpf = cpf.strip().replace(".", "").replace("-", "")
+        result = collection.find_one({'CPF': cpf})
+        
+        if result is not None:
+            retorno['body'] = json.dumps(f'CPF {cpf} alredy exists')
+            return retorno
+            
         if is_valid_cpf(cpf):
             retorno['statusCode'] = 201
             retorno['body'] = json.dumps(f'CPF {cpf}')
@@ -60,6 +68,7 @@ def handle_post(cpf, nome, email):
     
     
     storage[cpf] = {'CPF': cpf, 'Nome': nome, 'Email': email}
+    collection.insert_one({'CPF': cpf, 'Nome': nome, 'Email': email})
         
     return retorno
                  
@@ -94,9 +103,7 @@ def handle_delete(cpf):
     else:
         return retorno
 
-def is_valid_cpf(cpf: str) -> bool:
-    cpf = cpf.strip().replace(".", "").replace("-", "")
-    
+def is_valid_cpf(cpf: str) -> bool:    
     if len(cpf) != 11:
         return False
     
