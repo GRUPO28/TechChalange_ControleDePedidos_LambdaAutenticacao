@@ -9,10 +9,10 @@ retorno = {
     'body': json.dumps('Invalid data.')
 }
 
-# Conecte-se ao MongoDB Atlas
-client = MongoClient(os.getenv('MONGODB_URI'))
-db = client[os.getenv('MONGODB_DB')]
-collection = db[os.getenv('MONGODB_COLLECTION')]
+# Conecte-se ao Amazon DocumentDB
+client = MongoClient(os.getenv('DOCUMENTDB_URI'))
+db = client[os.getenv('DOCUMENTDB_DB')]
+collection = db[os.getenv('DOCUMENTDB_COLLECTION')]
 
 def lambda_handler(event, context):
     method = event.get('httpMethod')
