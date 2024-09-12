@@ -21,11 +21,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="LambdaAutenticacao.py" />
-    <Compile Include="test\local.py" />
+    <Compile Include="Lambda\autenticacao.py" />
+    <Compile Include="Lambda\test\local.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="test\" />
+    <Folder Include="Lambda\" />
+    <Folder Include="Lambda\test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="iam.tf" />
+    <Content Include="lambda.tf" />
+    <Content Include="locals.tf" />
+    <Content Include="main.tf" />
+    <Content Include="variables.tf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
