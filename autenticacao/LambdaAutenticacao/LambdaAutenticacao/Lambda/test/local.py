@@ -23,6 +23,7 @@ def test_delete():
         'cpf': '12345678901'
     }
     response = lambda_handler(event, None)
+    
     print('DELETE Response:', response)
 
 if __name__ == '__main__':
