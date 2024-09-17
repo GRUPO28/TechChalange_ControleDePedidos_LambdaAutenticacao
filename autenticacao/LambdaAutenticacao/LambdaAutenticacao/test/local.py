@@ -4,7 +4,7 @@ from LambdaAutenticacao import lambda_handler
 def test_post():
     event = {
         'httpMethod': 'POST',
-        'cpf': '766.909.060-00',
+        'cpf': '436.766.690-53',
         'email': 'teste@gmail.com',
         'nome': 'Teste'
     }
