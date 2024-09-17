@@ -25,14 +25,26 @@
     <Compile Include="Lambda\test\local.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="config\dev\" />
+    <Folder Include="config\local\" />
+    <Folder Include="config\prod\" />
     <Folder Include="Lambda\" />
     <Folder Include="Lambda\test\" />
+    <Folder Include="config\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config\dev\backend.hcl" />
+    <Content Include="config\dev\terraform.tfvars" />
+    <Content Include="config\local\backend.hcl" />
+    <Content Include="config\local\terraform.tfvars" />
+    <Content Include="config\prod\backend.hcl" />
+    <Content Include="config\prod\terraform.tfvars" />
+    <Content Include="ec2.tf" />
     <Content Include="iam.tf" />
     <Content Include="lambda.tf" />
     <Content Include="locals.tf" />
     <Content Include="main.tf" />
+    <Content Include="outputs.tf" />
     <Content Include="variables.tf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
