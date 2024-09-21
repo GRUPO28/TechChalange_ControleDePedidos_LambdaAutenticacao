@@ -1,9 +1,8 @@
 resource "aws_apigatewayv2_integration" "lambda" {
   api_id = aws_apigatewayv2_api.main.id
 
-  integration_uri    = aws_lambda_function.autenticacao.invoke_arn
-  integration_type   = "AWS_PROXY"
-  integration_method = "POST"
+  integration_uri  = aws_lambda_function.autenticacao.invoke_arn
+  integration_type = "AWS_PROXY"
 }
 
 resource "aws_apigatewayv2_route" "get_lambda" {
