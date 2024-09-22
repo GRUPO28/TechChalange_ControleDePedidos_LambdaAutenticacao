@@ -1,13 +1,13 @@
 name: Terraform Deploy
 
 on:
-    push:
-      branches:
-        - main
+  push:
+    branches:
+      - main
 
 defaults:
   run:
-    working-directory: ./infra
+    working-directory: ./autenticacao/LambdaAutenticacao/LambdaAutenticacao
 
 jobs:
   terraform-deploy:
