@@ -1,10 +1,10 @@
 variable "aws_region" {
   description = "AWS region"
-  default     = "sa-east-1"
+  default     = "us-east-1"
 }
 
 variable "aws_profile" {
-  type		  = string
+  type        = string
   description = "AWS profile"
   default     = "default"
 }
@@ -12,6 +12,7 @@ variable "aws_profile" {
 variable "instance_type" {
   type        = string
   description = "Instance type"
+  default     = "t3.micro"
 }
 
 variable "enviroment" {
