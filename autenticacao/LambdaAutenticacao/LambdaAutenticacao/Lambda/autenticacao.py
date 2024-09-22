@@ -4,7 +4,7 @@ cpf_storage = {}
 
 def lambda_handler(event, context):
     method = event.get('httpMethod')
-    cpf = event.get('cpf')
+    cpf = event.get("queryStringParameters", {}).get("cpf")
 
     if method == 'POST':
         return handle_post(cpf)
