@@ -30,6 +30,15 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ vars.AWS_DEFAULT_REGION }}
 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Lambda Dependencies
+      run: |
+        pip install -r requirements.txt -t ./  # Instala dependências na pasta atual
+
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
       with:
