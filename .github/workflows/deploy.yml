@@ -37,7 +37,9 @@ jobs:
 
     - name: Install Lambda Dependencies
       run: |
+        cd Lambda
         pip install pymongo -t .  # Instala dependências na pasta atual
+        cd ..
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
