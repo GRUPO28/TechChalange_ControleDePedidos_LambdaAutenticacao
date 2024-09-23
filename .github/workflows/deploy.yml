@@ -37,7 +37,7 @@ jobs:
 
     - name: Install Lambda Dependencies
       run: |
-        pip install -r requirements.txt -t ./  # Instala dependências na pasta atual
+        pip install pymongo -t .  # Instala dependências na pasta atual
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
