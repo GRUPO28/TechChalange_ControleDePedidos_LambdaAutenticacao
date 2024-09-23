@@ -10,15 +10,13 @@ retorno = {
 }
 
 # Conecte-se ao Amazon DocumentDB
-client = MongoClient(os.getenv('DB_CONECTION_STRING'))
-db = client[os.getenv('DB_DATABASE')]
-collection = db[os.getenv('DB_COLLECTION')]
+client = MongoClient(os.getenv('DOCUMENTDB_URI'))
+db = client[os.getenv('DOCUMENTDB_DB')]
+collection = db[os.getenv('DOCUMENTDB_COLLECTION')]
 
 def lambda_handler(event, context):
-    method = event.get('httpMethod')
-    cpf = event.get('cpf')
-    nome = event.get('nome')
-    email = event.get('email')
+    method = event.get("requestContext", {}).get("http", {}).get("method")
+
 
     if method == 'POST':
         return handle_post(event)
@@ -29,11 +27,14 @@ def lambda_handler(event, context):
         retorno['body'] = json.dumps('Method Not Allowed')
 
 def handle_post(event):
+
     if event.get("body"):
         body = json.loads(event["body"])
         cpf = body.get("cpf")
-        nome = body.get("nome")
         email = body.get("email")
+        nome = body.get("nome")
+    else:
+        cpf = None
 
     if cpf.strip():
         cpf = cpf.strip().replace(".", "").replace("-", "")
@@ -78,11 +79,9 @@ def handle_post(event):
     
 
 def handle_get(event):
-    cpf = event.get("queryStringParameters", {}).get("cpf");
-    
+
+    cpf = event.get("queryStringParameters", {}).get("cpf")
     if is_valid_cpf(cpf):
-        cpf = cpf.strip().replace(".", "").replace("-", "")
-        
         if cpf in storage:
             retorno['statusCode'] = 200
             retorno['body'] = json.dumps(f'CPF found {cpf}')
@@ -93,12 +92,8 @@ def handle_get(event):
             return retorno
     else:
         return retorno
-    
 
-def is_valid_cpf(cpf: str) -> bool:
-    if cpf is None:
-        return False
-    
+def is_valid_cpf(cpf: str) -> bool:    
     if len(cpf) != 11:
         return False
     

@@ -1,6 +1,6 @@
 data "archive_file" "autenticacao" {
   type        = "zip"
-  source_file = "Lambda/autenticacao.py"
+  source_dir  = "Lambda" # Pacote completo com dependências
   output_path = "files/autenticacao.zip"
 }
 
