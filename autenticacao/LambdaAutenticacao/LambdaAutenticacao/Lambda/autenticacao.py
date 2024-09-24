@@ -2,8 +2,6 @@ import json
 import os
 from pymongo import MongoClient
 
-storage = {}
-
 retorno = {
     'statusCode': 400,
     'body': json.dumps('Invalid data.')
@@ -70,8 +68,6 @@ def handle_post(event):
         retorno['body'] = json.dumps(f'The name {nome} is invalid')
         return retorno
     
-    
-    storage[cpf] = {'CPF': cpf, 'Nome': nome, 'Email': email}
     collection.insert_one({'CPF': cpf, 'Nome': nome, 'Email': email})
         
     return retorno
