@@ -10,9 +10,9 @@ retorno = {
 }
 
 # Conecte-se ao Amazon DocumentDB
-client = MongoClient(os.getenv('DOCUMENTDB_URI'))
-db = client[os.getenv('DOCUMENTDB_DB')]
-collection = db[os.getenv('DOCUMENTDB_COLLECTION')]
+client = MongoClient(os.getenv('DB_CONECTION_STRING'))
+db = client[os.getenv('DB_DATABASE')]
+collection = db[os.getenv('DB_COLLECTION')]
 
 def lambda_handler(event, context):
     method = event.get("requestContext", {}).get("http", {}).get("method")
