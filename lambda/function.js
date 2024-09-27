@@ -1,7 +1,6 @@
 const { MongoClient } = require('mongodb');
 const jwt = require('jsonwebtoken');
 
-// Obtém a URL do DocumentDB a partir das variáveis de ambiente
 const uri = process.env.DB_CONNECTION_STRING;
 const secret = process.env.JWT_SECRET;
 
