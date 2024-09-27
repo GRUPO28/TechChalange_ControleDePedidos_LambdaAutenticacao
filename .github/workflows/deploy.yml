@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./autenticacao/LambdaAutenticacao/LambdaAutenticacao
+    working-directory: ./terraform
 
 jobs:
   terraform-deploy:
@@ -15,9 +15,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        DB_CONECTION_STRING: ${{ secrets.DB_CONECTION_STRING }}
-        DB_DATABASE: ${{ secrets.DB_DATABASE }}
-        DB_COLLECTION: ${{secrets.DB_COLLECTION}}
+        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     steps:
     - name: Checkout Repository
@@ -28,18 +27,20 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ vars.AWS_DEFAULT_REGION }}
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        python-version: '3.9'
+        node-version: '16'
 
     - name: Install Lambda Dependencies
       run: |
-        cd Lambda
-        pip install pymongo -t .  # Instala dependências na pasta atual
         cd ..
+        cd lambda  # Ajuste o caminho para a pasta que contém seu código Lambda
+        npm install  # Instala dependências do package.json
+        cd ..  # Volta para o diretório anterior
+        cd terraform
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
@@ -50,7 +51,7 @@ jobs:
       run: terraform init
 
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan -var "DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}" -var "JWT_SECRET=${{ secrets.JWT_SECRET }}"
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -var "DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}" -var "JWT_SECRET=${{ secrets.JWT_SECRET }}"

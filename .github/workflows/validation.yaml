@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./autenticacao/LambdaAutenticacao/LambdaAutenticacao
+    working-directory: ./terraform
 
 jobs:
   terraform-validation:
@@ -15,9 +15,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        DB_CONECTION_STRING: ${{ secrets.DB_CONECTION_STRING }}
-        DB_DATABASE: ${{ secrets.DB_DATABASE }}
-        DB_COLLECTION: ${{secrets.DB_COLLECTION}}
+        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     steps:
     - name: Checkout Repository
@@ -28,7 +27,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
@@ -42,4 +41,4 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan -var "DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}" -var "JWT_SECRET=${{ secrets.JWT_SECRET }}"
