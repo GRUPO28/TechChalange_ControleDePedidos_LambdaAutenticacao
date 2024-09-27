@@ -41,4 +41,4 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan -var "DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}" -var "JWT_SECRET=${{ secrets.JWT_SECRET }}"
