@@ -77,6 +77,19 @@ exports.handler = async (event) => {
             };
         }
 
+        if(event.httpMethod === 'POST'){
+
+            const body = JSON.parse(event.body);
+            const token = body.token;  // Extraindo o token do corpo da requisição
+            
+            // Verifica o token JWT
+            const decoded = jwt.verify(token, secret);
+            console.log('Token verificado com sucesso:', decoded);
+
+            responseMessage = 'Token válido.' + decoded;
+            // Você pode adicionar lógica adicional aqui, como salvar algo no banco de dados ou retornar mais dados
+        }
+
         await client.close();
 
         return {
