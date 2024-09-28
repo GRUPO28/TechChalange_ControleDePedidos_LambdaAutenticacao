@@ -22,7 +22,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
 }
 
 resource "aws_iam_policy" "lambda_vpc_policy" {
-  name        = "LambdaVpc1Policy"
+  name        = "LambdaVpcPolicy"
   description = "Policy for Lambda to manage network interfaces in VPC"
   policy = jsonencode({
     Version = "2012-10-17",
