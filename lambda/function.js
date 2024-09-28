@@ -82,12 +82,59 @@ exports.handler = async (event) => {
             const body = JSON.parse(event.body);
             const token = body.token;  // Extraindo o token do corpo da requisição
             
-            // Verifica o token JWT
-            const decoded = jwt.verify(token, secret);
-            console.log('Token verificado com sucesso:', decoded);
 
-            responseMessage = 'Token válido.' + decoded;
-            // Você pode adicionar lógica adicional aqui, como salvar algo no banco de dados ou retornar mais dados
+            // Verifica o token JWT
+            let decoded = jwt.verify(token, secret);
+            try {
+                // Verifica o token JWT
+                decoded = jwt.verify(token, secret);
+            } catch (err) {
+                // Se o token for inválido ou expirado, capturar o erro aqui
+                await client.close();
+                return {
+                    statusCode: 401,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Token inválido ou expirado.'
+                    }),
+                };
+            }
+            
+            const cpf = decoded.cpf
+
+            // Validação do CPF
+            if (!validarCPF(cpf)) {
+                await client.close();
+                return {
+                    statusCode: 400,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'CPF do token inválido.'
+                    }),
+                };
+            }
+
+            // Verifica se o CPF existe no banco de dados
+            const clientData = await collection.findOne({ cPF: cpf });
+
+            if (!clientData) {
+                await client.close();
+                return {
+                    statusCode: 404,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Cliente com o CPF não encontrado.'
+                    }),
+                };
+            }
+
+            responseMessage = 'Token e CPF válidos.';
         }
 
         await client.close();
