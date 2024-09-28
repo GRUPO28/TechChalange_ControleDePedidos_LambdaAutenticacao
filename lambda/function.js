@@ -56,8 +56,7 @@ exports.handler = async (event) => {
                     },
                     body: JSON.stringify({
                         message: responseMessage,
-                        token: token,
-                        client: clientData
+                        token: token
                     }),
                 };
             } else {
