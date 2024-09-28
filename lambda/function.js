@@ -103,21 +103,6 @@ exports.handler = async (event) => {
             }
             
             const cpf = decoded.cpf
-
-            // Validação do CPF
-            if (!validarCPF(cpf)) {
-                await client.close();
-                return {
-                    statusCode: 400,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: 'CPF do token inválido.'
-                    }),
-                };
-            }
-
             // Verifica se o CPF existe no banco de dados
             const clientData = await collection.findOne({ cPF: cpf });
 
